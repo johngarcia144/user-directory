@@ -17,7 +17,7 @@ function SearchBox (props) {
               />
           </div>
           <div className="col-2">
-              <button type="submit" onClick={props.handleFormSubmit} className="btn btn-success">
+              <button type="submit" onClick={props.search} className="btn btn-success">
                   Search
               </button>
           </div>
