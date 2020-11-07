@@ -15,7 +15,10 @@ class App extends Component {
   // When the component mounts, get a list of all available base breeds and update this.state.breeds
   componentDidMount() {
     API.getUsers()
-      .then(res => this.setState({ employees: res.data.results }))
+      .then(res => this.setState({ 
+        employees: res.data.results,
+        results: res.data.results,
+       }))
       .catch(err => console.log(err));
   }
   handleInputChange = event => {
@@ -24,15 +27,17 @@ class App extends Component {
   };
   handleFormSubmit = event => {
     event.preventDefault();
-    console.log("Does this work?");
-    // API.getUsers(this.state.search)
-    //   .then(res => {
-    //     if (res.data.status === "error") {
-    //       throw new Error(res.data.message);
-    //     }
-    //     this.setState({ results: res.data.message, error: "" });
-    //   })
-    //   .catch(err => this.setState({ error: err.message }));
+
+    const filteredUsers = this.state.employees.filter((employee) => {
+      const fullName = [employee.name.first, employee.name.last].join(" ").toLowerCase()
+
+      return fullName.includes(this.state.search.toLowerCase())
+    })
+
+    this.setState({
+      results: filteredUsers
+    })
+    
   };
   render() {
     return (
@@ -43,7 +48,7 @@ class App extends Component {
         <Container>
           <SearchBox onChange={this.handleInputChange} search={this.handleFormSubmit}>
           </SearchBox>
-          <SearchResults results={this.state.employees}>
+          <SearchResults results={this.state.results}>
           </SearchResults>
         </Container>
       </div>
